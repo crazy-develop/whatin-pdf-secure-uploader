@@ -1,0 +1,81 @@
+{
+  "entities": {
+    "Subject": {
+      "title": "Subject",
+      "description": "Subject category entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "color": { "type": "string" },
+        "iconName": { "type": "string" }
+      },
+      "required": ["id", "name"]
+    },
+    "PDFDocument": {
+      "title": "PDFDocument",
+      "description": "Metadata for a secure uploaded PDF",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "subjectName": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileSize": { "type": "number" },
+        "uploadedAt": { "type": "string" },
+        "views": { "type": "number" },
+        "downloadRestricted": { "type": "boolean" },
+        "printRestricted": { "type": "boolean" },
+        "watermarkEnabled": { "type": "boolean" },
+        "isLocked": { "type": "boolean" },
+        "uploadedBy": { "type": "string" },
+        "base64Backup": { "type": "string" }
+      },
+      "required": ["id", "title", "subjectId", "fileName"]
+    },
+    "SecurityLog": {
+      "title": "SecurityLog",
+      "description": "System security event logging",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "action": { "type": "string" },
+        "fileName": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "ipAddress": { "type": "string" },
+        "detail": { "type": "string" }
+      },
+      "required": ["id", "action", "fileName", "timestamp"]
+    },
+    "SystemSetting": {
+      "title": "SystemSetting",
+      "description": "Global system configurations and links",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "externalIntegrationUrl": { "type": "string" }
+      },
+      "required": ["id"]
+    }
+  },
+  "firestore": {
+    "/subjects/{subjectId}": {
+      "schema": "Subject",
+      "description": "List of subject categories"
+    },
+    "/pdfs/{pdfId}": {
+      "schema": "PDFDocument",
+      "description": "Metadata and secure content backup of PDFs"
+    },
+    "/security_logs/{logId}": {
+      "schema": "SecurityLog",
+      "description": "Central security audit trails"
+    },
+    "/settings/{settingId}": {
+      "schema": "SystemSetting",
+      "description": "System config entries"
+    }
+  }
+}

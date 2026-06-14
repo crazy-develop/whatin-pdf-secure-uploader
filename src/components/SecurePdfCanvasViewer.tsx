@@ -270,12 +270,14 @@ export default function SecurePdfCanvasViewer({ pdfUrl, watermarkText, onViolati
             />
 
             {/* In-Canvas Dynamic Floating Transparent security marker */}
-            <div className="absolute inset-0 pointer-events-none select-none flex items-center justify-center overflow-hidden z-20" id="incanvas-watermark">
-              <div className="text-slate-900/[0.04] dark:text-slate-100/[0.03] text-center rotate-[-30deg] font-mono select-none pointer-events-none scale-150 whitespace-nowrap">
-                <p className="text-2xl font-black uppercase">SECURITY LOCKED</p>
-                <p className="text-sm tracking-widest font-bold mt-1">{watermarkText}</p>
-                <p className="text-[10px] mt-0.5">TELEMETRY_TRACKED_PORTAL</p>
-              </div>
+            <div className="absolute inset-0 pointer-events-none select-none grid grid-cols-2 sm:grid-cols-3 gap-y-20 gap-x-8 p-8 overflow-hidden z-20" id="incanvas-watermark">
+              {Array.from({ length: 15 }).map((_, i) => (
+                <div key={i} className="text-slate-900/[0.04] dark:text-slate-100/[0.035] text-center rotate-[-30deg] font-mono select-none pointer-events-none whitespace-nowrap leading-tight my-auto p-4 flex flex-col items-center justify-center">
+                  <p className="text-[#0f172a]/[0.05] dark:text-[#f8fafc]/[0.045] text-xl font-bold uppercase tracking-widest">Whatin.in</p>
+                  <p className="text-[#0f172a]/[0.05] dark:text-[#f8fafc]/[0.045] text-[11px] font-black tracking-wide mt-0.5">Dushyant Saini</p>
+                  <p className="text-[#3b82f6]/[0.06] dark:text-[#60a5fa]/[0.05] text-[9px] font-bold mt-1 tracking-tight">{watermarkText}</p>
+                </div>
+              ))}
             </div>
 
           </div>

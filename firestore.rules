@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && (request.auth.token.email_verified == true || request.auth.token.email == "dushyantsaini@whatin.in");
+    }
+
+    function isAdmin() {
+      return isVerifiedUser() && request.auth.token.email == "dushyantsaini@whatin.in";
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // 1. Subjects Configuration Rules
+    match /subjects/{subjectId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() && isValidId(subjectId);
+    }
+
+    // 2. PDFs Configuration Rules
+    match /pdfs/{pdfId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(pdfId) && (
+        isAdmin() || (request.resource.data.uploadedBy == request.auth.token.email || request.resource.data.uploadedBy == request.auth.token.name)
+      );
+      allow update: if isSignedIn() && (
+        isAdmin() || (
+          // Allow standard students to only increment 'views' field
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views']) &&
+          request.resource.data.views == resource.data.views + 1
+        )
+      );
+      allow delete: if isAdmin();
+    }
+
+    // 3. Security logs Configuration Rules
+    match /security_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn() && isValidId(logId);
+      allow update, delete: if isAdmin();
+    }
+
+    // 4. Settings Configuration Rules
+    match /settings/{settingId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() && isValidId(settingId);
+    }
+  }
+}
