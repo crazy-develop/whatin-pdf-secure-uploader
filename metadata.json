@@ -1,0 +1,6 @@
+{
+  "name": "Secure PDF Portal",
+  "description": "Secure PDF uploading and subject-wise portal, limiting reading of files strictly to our web viewer with custom security watermarks, disabled downloads, print blocks, and screenshot protection.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
